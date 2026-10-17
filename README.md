@@ -2,8 +2,8 @@
 
 MCP сървър с цените от седмичната брошура на Лидл България, като Netlify Function.
 
-- Проект в Netlify: `lidl-brochure-mcp` (вече създаден, `MCP_KEY` е зададен)
-- Endpoint: `https://lidl-brochure-mcp.netlify.app/mcp?key=<MCP_KEY>`
+- Проект в Netlify: `lidl-brochure-mcp`
+- Endpoint (публичен): `https://lidl-brochure-mcp.netlify.app/mcp`
 
 ## Деплой (еднократно)
 
@@ -24,11 +24,11 @@ npx netlify-cli deploy --build --prod --site d988917d-448b-4388-892f-4f7237ef495
 ## Свързване с Claude
 
 **claude.ai / мобилно приложение** – Settings → Connectors → Add custom connector → URL:
-`https://lidl-brochure-mcp.netlify.app/mcp?key=<MCP_KEY>`
+`https://lidl-brochure-mcp.netlify.app/mcp`
 
 **Claude Code:**
 ```bash
-claude mcp add --transport http lidl "https://lidl-brochure-mcp.netlify.app/mcp?key=<MCP_KEY>"
+claude mcp add --transport http lidl "https://lidl-brochure-mcp.netlify.app/mcp"
 ```
 
 ## Нова брошура
@@ -51,6 +51,6 @@ npx netlify-cli deploy --build --prod --site d988917d-448b-4388-892f-4f7237ef495
 | `scripts/parse_brochure.py` | Парсер PDF → JSON |
 | `.github/workflows/update-brochure.yml` | Обновяване на брошурата от GitHub |
 
-## Сигурност
+## Достъп
 
-Ключът е в URL-а, защото custom connector в claude.ai не праща собствен header. Не споделяй URL-а. Ако изтече: Netlify → Environment variables → смени `MCP_KEY` → redeploy. Има rate limit от 120 заявки/мин.
+Сървърът е публичен, без ключ. Има rate limit от 120 заявки/мин на IP. Ако някога искаш да го заключиш, задай env var `MCP_KEY` в Netlify и redeploy – тогава URL-ът става `/mcp?key=<MCP_KEY>`.

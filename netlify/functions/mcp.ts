@@ -109,11 +109,11 @@ function buildServer() {
   return server;
 }
 
-// Ключът е в URL-а (?key=...), защото custom connector в claude.ai не праща собствен header.
-// Приема се и "Authorization: Bearer <key>" за Claude Code / Cursor.
+// Публичен по подразбиране. Ако някога зададеш env var MCP_KEY, сървърът ще изисква
+// ?key=... в URL-а (или "Authorization: Bearer <key>").
 function authorized(req: Request): boolean {
   const expected = Netlify.env.get("MCP_KEY");
-  if (!expected) return false;
+  if (!expected) return true;
   const url = new URL(req.url);
   const given = url.searchParams.get("key") ?? req.headers.get("authorization")?.match(/^Bearer\s+(.+)$/i)?.[1];
   if (!given) return false;
